@@ -36,7 +36,7 @@ on:
         type: string
         required: false
 env:
-  APP_NAME: microhacker-api
+  APP_NAME: ld-hackers-api
 jobs:
   deploy:
     environment: ${{ inputs.environment }}
@@ -44,7 +44,7 @@ jobs:
       - name: Checkout
         uses: cloudbees-io/checkout@v1
         with:
-          repository: cloudbees-days/ld-hackers-api
+          repository: ldorg/ld-hackers-api
       - uses: cashokannamalai/kubeconfig@v1
         name: Set kubeconfig
         with:
@@ -68,7 +68,7 @@ jobs:
           version: ${{ inputs.artifactVersion }}
           digest: ${{ inputs.digest }}
           url: "${{ secrets.DOCKERHUB_USER }}/ld-hackers-api:${{ inputs.artifactVersion }}"
-          target-environment: micro-hacker
+          target-environment: ld-hackers-prod
       - name: Publish evidence
         uses: cloudbees-io/publish-evidence-item@v1
         with:
