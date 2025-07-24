@@ -60,7 +60,7 @@ jobs:
             image:
               repository: ${{ secrets.DOCKERHUB_USER }}/ld-hackers-api
               tag: ${{ inputs.artifactVersion }}
-            hostname: ld-hackers-api.preview.cb-demos.io
+            hostname: ld-hackers-api.${{ inputs.environment }}.preview.cb-demos.io
       - name: Register deployed artifact
         uses: cloudbees-io/register-deployed-artifact@v1
         with:
@@ -68,12 +68,12 @@ jobs:
           version: ${{ inputs.artifactVersion }}
           digest: ${{ inputs.digest }}
           url: "${{ secrets.DOCKERHUB_USER }}/ld-hackers-api:${{ inputs.artifactVersion }}"
-          target-environment: ld-hackers-prod
+          target-environment: ${{ inputs.environment }}
       - name: Publish evidence
         uses: cloudbees-io/publish-evidence-item@v1
         with:
           content: |-
             ## Deployed environment
-            [Dev frontend](https://ld-hackers-api.preview.cb-demos.io/)
+            [${{ inputs.environment }} frontend](https://ld-hackers-api.${{ inputs.environment }}.preview.cb-demos.io/)
             Running ld-hackers-api:${{ inputs.artifactVersion }}
           format: MARKDOWN
