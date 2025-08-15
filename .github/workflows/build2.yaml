@@ -83,7 +83,7 @@ jobs:
           EOF
 
       - name: Publish build artifact to CloudBees
-        uses: cloudbees-io-gha/register-build-artifact@v3.0.1
+        uses: cloudbees-io-gha/register-build-artifact@v3
         with:
           name: ld-hackers-api
           url: ${{ secrets.DOCKERHUB_USER }}/ld-hackers-api
