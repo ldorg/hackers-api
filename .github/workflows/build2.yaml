@@ -1,4 +1,4 @@
-name: gha-build
+name: gha-build2
 
 on:
   push:
@@ -79,7 +79,7 @@ jobs:
 
           [Docker Hub](https://hub.docker.com/repository/docker/${{ secrets.DOCKERHUB_USER }}/ld-hackers-api/tags)
 
-          Built ld-hackers-api:${{ github.sha }}
+          Built ld-hackers-api:3.0-${{ github.sha }}
           EOF
 
       - name: Publish build artifact to CloudBees
