@@ -39,7 +39,7 @@ jobs:
             test-results.json
 
       - name: Publish test results to CloudBees
-        uses: cloudbees-io-gha/public-test-results@v2
+        uses: cloudbees-io-gha/publish-test-results@v2
         with:
           test-type: go
           results-path: test-results.json
