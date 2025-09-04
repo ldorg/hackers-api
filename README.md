@@ -66,12 +66,15 @@ http://localhost:8080/swagger/index.html
 
 ### Available Endpoints
 
+- `GET /health` - Health check endpoint
 - `GET /api/stories` - Get top stories (default)
 - `GET /api/stories/top` - Get top stories
 - `GET /api/stories/show` - Get Show HN stories
 - `GET /api/stories/ask` - Get Ask HN stories
 
 ### Response Format
+
+#### Stories Endpoint Response
 
 ```json
 {
@@ -84,6 +87,16 @@ http://localhost:8080/swagger/index.html
   "comments_url": "https://news.ycombinator.com/item?id=123456",
   "comments": 42,
   "type": "show"
+}
+```
+
+#### Health Check Response
+
+```json
+{
+  "status": "ok",
+  "timestamp": "2024-01-28T12:00:00Z",
+  "version": "1.0"
 }
 ```
 
