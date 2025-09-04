@@ -26,6 +26,13 @@ type ErrorResponse struct {
 	Error string `json:"error" example:"Failed to fetch stories"`
 }
 
+// HealthResponse represents a health check response
+type HealthResponse struct {
+	Status    string    `json:"status" example:"ok"`
+	Timestamp time.Time `json:"timestamp"`
+	Version   string    `json:"version" example:"1.0"`
+}
+
 // Story represents a Hacker News story item
 type Story struct {
 	ID          int       `json:"id" example:"123456"`
@@ -199,6 +206,22 @@ func getStories(c *gin.Context) {
 	c.JSON(http.StatusOK, stories)
 }
 
+// @Summary     Health check
+// @Description Get the health status of the API
+// @Tags        health
+// @Accept      json
+// @Produce     json
+// @Success     200 {object} HealthResponse
+// @Router      /health [get]
+func getHealth(c *gin.Context) {
+	response := HealthResponse{
+		Status:    "ok",
+		Timestamp: time.Now(),
+		Version:   "1.0",
+	}
+	c.JSON(http.StatusOK, response)
+}
+
 func main() {
 	r := gin.Default()
 
@@ -215,6 +238,9 @@ func main() {
 
 		c.Next()
 	})
+
+	// Health check endpoint (outside API group for easier access by monitoring tools)
+	r.GET("/health", getHealth)
 
 	// API routes
 	api := r.Group("/api")

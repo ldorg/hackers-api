@@ -30,6 +30,9 @@ func setupRouter() *gin.Engine {
 		c.Next()
 	})
 
+	// Health check endpoint
+	r.GET("/health", getHealth)
+
 	api := r.Group("/api")
 	{
 		api.GET("/stories", getStories)
@@ -178,4 +181,26 @@ func TestCORSHeaders(t *testing.T) {
 	assert.Equal(t, "*", w.Header().Get("Access-Control-Allow-Origin"))
 	assert.Equal(t, "GET, OPTIONS", w.Header().Get("Access-Control-Allow-Methods"))
 	assert.Equal(t, "Origin, Content-Type", w.Header().Get("Access-Control-Allow-Headers"))
+}
+
+// TestHealthEndpoint tests the health check endpoint
+func TestHealthEndpoint(t *testing.T) {
+	router := setupRouter()
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/health", nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+
+	var response HealthResponse
+	err := json.Unmarshal(w.Body.Bytes(), &response)
+	assert.NoError(t, err, "Should be able to unmarshal health response")
+
+	assert.Equal(t, "ok", response.Status, "Health status should be 'ok'")
+	assert.Equal(t, "1.0", response.Version, "Version should be '1.0'")
+	assert.WithinDuration(t, time.Now(), response.Timestamp, time.Second, "Timestamp should be current time")
+
+	// Verify the response content type
+	assert.Equal(t, "application/json; charset=utf-8", w.Header().Get("Content-Type"))
 }
